@@ -1,15 +1,47 @@
 import { useEffect, useState } from "react"
 
 
-const Form = () => {
+const Form = ({ patients, setPatients }) => {
+
+  // Inputs state
   const [name, setName] = useState('')
   const [petOwner, setPetOwner] = useState('')
   const [email, setEmail] = useState('')
   const [date, setDate] = useState('')
   const [symptoms, setSymptoms] = useState('')
 
+  // Errors state
+  const [error, setError] = useState(false)
+
   const handleSubmit = (event) => {
     event.preventDefault()
+
+      // Validacion del Formulario
+      if([ name, petOwner, email, date, symptoms ].includes('')) {
+        setError(true)
+        return
+      } 
+
+      setError(false)
+
+      // Objeto de Paciente
+      const PatientObject = {
+        name, 
+        petOwner, 
+        email, 
+        date, 
+        symptoms
+      }
+
+      setPatients([...patients, PatientObject])
+
+      // Reiniciar el formulario
+      setName('')
+      setPetOwner('')
+      setEmail('')
+      setDate('')
+      setSymptoms('')
+
     console.log("enviando formulario")
   }
 
@@ -25,7 +57,12 @@ const Form = () => {
       <form 
         onSubmit={handleSubmit}
         className="bg-white shadow-md rounded-lg py-10 px-5 mb-10 mx-5"
-        >
+      >
+        {error  && 
+          <div className="bg-red-800 text-white text-center p-3 uppercase font-bold mb-3 rounded-md">
+            <p>Todos los campos son obligatorios</p>
+          </div>
+        }
         <div className="mb-5">
           <label htmlFor="pet" className="block text-gray-700 uppercase font-bold">
             Nombre mascota
