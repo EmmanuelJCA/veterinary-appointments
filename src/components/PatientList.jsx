@@ -14,8 +14,9 @@ const PatientList = ({patients}) => {
 
       <div className="md:h-screen md:overflow-scroll">
 
-        { patients.map( patient => (
+        { patients.map( (patient,) => (
           <Patient
+            key={patient.id}
             patient={patient}
           />
         ))}
