@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import Error from "./Error"
 
 
-const Form = ({ patients, setPatients }) => {
+const Form = ({ patients, setPatients, patient }) => {
 
   // Inputs state
   const [name, setName] = useState('')
@@ -13,6 +13,18 @@ const Form = ({ patients, setPatients }) => {
 
   // Errors state
   const [error, setError] = useState(false)
+
+  useEffect(() => {
+    if(Object.keys(patient).length > 0) {
+      setName(patient.name)
+      setPetOwner(patient.petOwner)
+      setEmail(patient.email)
+      setDate(patient.date)
+      setSymptoms(patient.symptoms)
+    } else {
+
+    }
+  }, [patient])
 
   const generateId = () => {
     const random = Math.random().toString(36).substring(2)
