@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import Error from "./Error"
 
 
-const Form = ({ patients, setPatients, patient }) => {
+const Form = ({ patients, setPatients, patient, setPatient }) => {
 
   // Inputs state
   const [name, setName] = useState('')
@@ -50,11 +50,23 @@ const Form = ({ patients, setPatients, patient }) => {
         petOwner, 
         email, 
         date, 
-        symptoms,
-        id: generateId()
+        symptoms
       }
 
-      setPatients([...patients, PatientObject])
+      if(patient.id) {
+        // Editando el registro
+        PatientObject.id = patient.id
+
+        const updatedPatients = patients.map( patientState => patientState.id === patient.id ? PatientObject : patientState)
+
+        setPatients(updatedPatients)
+        setPatient({})
+
+      } else {
+        // Nuevo registro
+        PatientObject.id = generateId()
+        setPatients([...patients, PatientObject])
+      }
 
       // Reiniciar el formulario
       setName('')
@@ -152,7 +164,7 @@ const Form = ({ patients, setPatients, patient }) => {
           id=""
           type="submit"
           className="bg-indigo-600 w-full p-3 text-white uppercase font-bold hover:bg-indigo-700 cursor-pointer transition-all"
-          value="Agregar paciente"
+          value={ patient.id ? 'Editar paciente' : 'Agregar paciente' }
         />
 
       </form>
